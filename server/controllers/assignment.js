@@ -46,24 +46,49 @@ const createAssignment = async (
 
     // ================= VALIDATIONS =================
 
-    if (
-      !title ||
-      !subject ||
-      !dueDate ||
-      !content ||
-      !TeacherId
-    ) {
+    // ================= VALIDATIONS =================
 
-      return res.status(400).json({
+const missingFields = [];
 
-        success: false,
+if (!title) {
+  missingFields.push("title");
+}
 
-        message:
-          "Please fill all required fields",
+if (!subject) {
+  missingFields.push("subject");
+}
 
-      });
+if (!dueDate) {
+  missingFields.push("dueDate");
+}
 
-    }
+if (!content) {
+  missingFields.push("content");
+}
+
+if (!TeacherId) {
+  missingFields.push("TeacherId");
+}
+
+if (missingFields.length > 0) {
+
+  console.log(
+    "Missing Fields:",
+    missingFields
+  );
+
+  return res.status(400).json({
+
+    success: false,
+
+    message:
+      "Missing required fields",
+
+    missingFields,
+
+  });
+
+}
 
     if (
       !Array.isArray(
@@ -173,7 +198,7 @@ const createAssignment = async (
     // ================= ADD JOB TO QUEUE =================
 
     await questionPaperQueue.add(
-      "generate-paper",
+      "question-paper-generation",
       {
         assignmentId:
           assignment._id,
@@ -224,10 +249,7 @@ const getAllAssignments = async (
 
     const { TeacherId } =
       req.query;
-      console.log(req.query)
-
-      console.log("TeacherId:", TeacherId);
-
+  
     const assignments =
       await Assignment.find({
 

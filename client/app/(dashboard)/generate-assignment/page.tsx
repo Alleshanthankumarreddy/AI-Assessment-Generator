@@ -194,6 +194,26 @@ const handleSubmit = async () => {
 
     // ================= BASIC FIELDS =================
 
+    const teacher =
+  JSON.parse(
+    localStorage.getItem("teacher") || "{}"
+  );
+
+const TeacherId =
+  teacher?._id;
+
+console.log(
+  "TeacherId:",
+  TeacherId
+);
+
+// ================= APPEND TEACHER ID =================
+
+formData.append(
+  "TeacherId",
+  TeacherId || ""
+);
+
     formData.append(
       "title",
       title

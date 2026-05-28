@@ -91,18 +91,6 @@ export const deleteAssignment =
 export const createAssignment =
   async (formData: FormData) => {
 
-    const teacher =
-      JSON.parse(
-        localStorage.getItem("teacher") || "{}"
-      );
-
-    const TeacherId =
-      teacher?._id;
-
-    formData.append(
-      "TeacherId",
-      TeacherId || ""
-    );
 
     const response =
       await api.post(
