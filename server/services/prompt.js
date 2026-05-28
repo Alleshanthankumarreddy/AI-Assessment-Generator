@@ -135,3 +135,5 @@ REQUIRED JSON FORMAT
 
   return prompt;
 };
+
+export default buildQuestionPaperPrompt;
