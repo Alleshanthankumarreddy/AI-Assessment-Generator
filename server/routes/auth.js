@@ -13,6 +13,6 @@ Authrouter.post("/register", registerTeacher);
 
 Authrouter.post("/login", loginTeacher);
 
-Authrouter.get("/logout", isAuthenticated, logoutTeacher);
+Authrouter.get("/logout", logoutTeacher);
 
 export default Authrouter;

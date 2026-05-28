@@ -19,12 +19,53 @@ const app = express();
 // =======================
 // Middlewares
 // =======================
+
+const allowedOrigins = [
+
+  "http://localhost:3000",
+
+  "https://ai-assessment-generator-delta.vercel.app",
+
+];
+
 app.use(
+
   cors({
-    origin:
-      "https://ai-assessment-generator-delta.vercel.app",
+
+    origin: function (
+      origin,
+      callback
+    ) {
+
+      // allow requests with no origin
+      if (!origin)
+        return callback(
+          null,
+          true
+        );
+
+      if (
+        allowedOrigins.includes(origin)
+      ) {
+
+        callback(null, true);
+
+      } else {
+
+        callback(
+          new Error(
+            "Not allowed by CORS"
+          )
+        );
+
+      }
+
+    },
+
     credentials: true,
+
   })
+
 );
 app.use(express.json());
 
@@ -36,11 +77,20 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin:
-      "https://ai-assessment-generator-delta.vercel.app",
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
+
+  origin: [
+
+    "http://localhost:3000",
+
+    "https://ai-assessment-generator-delta.vercel.app",
+
+  ],
+
+  methods: ["GET", "POST"],
+
+  credentials: true,
+
+},
 });
 
 initSocket(io);

@@ -188,26 +188,46 @@ res.status(200).json({
 
 // ================= LOGOUT =================
 
-const logoutTeacher = async (req, res) => {
+const logoutTeacher = async (
+  req,
+  res
+) => {
+
   try {
 
-    res.clearCookie("token");
+    res.clearCookie("token", {
+
+      httpOnly: true,
+
+      secure: true,
+
+      sameSite: "none",
+
+    });
 
     return res.status(200).json({
+
       success: true,
-      message: "Logout Successful",
+
+      message:
+        "Logout Successful",
+
     });
 
   } catch (error) {
 
     res.status(500).json({
+
       success: false,
-      message: error.message,
+
+      message:
+        error.message,
+
     });
 
   }
-};
 
+};
 
 export {
   registerTeacher,

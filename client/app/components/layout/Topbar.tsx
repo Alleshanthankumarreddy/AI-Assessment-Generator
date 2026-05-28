@@ -5,6 +5,11 @@ import {
   Menu,
 } from "lucide-react";
 
+import Link from "next/link";
+import { LogOut } from "lucide-react";
+import {logoutTeacher} from "../../../lib/auth";
+import { useRouter } from "next/navigation";
+
 import {
   usePathname,
 } from "next/navigation";
@@ -24,8 +29,10 @@ const Topbar = ({
   setMobileOpen,
 }: Props) => {
 
-  const { teacher } =
-    useAuthStore();
+  const {
+  teacher,
+  logout,
+} = useAuthStore();
 
   const pathname =
     usePathname();
@@ -60,6 +67,31 @@ const Topbar = ({
       ?.charAt(0)
       .toUpperCase() || "W";
 
+  const router =
+  useRouter();
+
+
+  const handleLogout =
+  async () => {
+
+    try {
+
+      await logoutTeacher();
+
+      logout();
+
+      router.push(
+        "/login"
+      );
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+};
+
   return (
 
     <header className="h-20 bg-white border border-gray-200 flex items-center justify-between px-4 lg:px-8 rounded-2xl">
@@ -79,42 +111,110 @@ const Topbar = ({
       {/* RIGHT */}
       <div className="flex items-center gap-4 lg:gap-5">
 
+        {/* LOGIN BUTTON */}
+        {
+          !teacher && (
+
+            <Link
+              href="/login"
+              className="hidden sm:flex items-center justify-center bg-black text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:scale-105 transition"
+            >
+
+              Login
+
+            </Link>
+
+          )
+        }
+
         {/* NOTIFICATION */}
-        <button className="relative">
+        {
+          teacher && (
 
-          <Bell size={22} />
+            <button className="relative">
 
-          <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              <Bell size={22} />
 
-        </button>
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
 
+            </button>
+
+          )
+        }
 
         {/* PROFILE */}
-        <div className="hidden sm:flex items-center gap-3">
+        {
+  teacher && (
 
-          <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold">
+    <div className="hidden sm:flex items-center gap-4">
 
-            {initial}
+      {/* PROFILE */}
+      <div className="flex items-center gap-3">
 
-          </div>
+        <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold">
 
-
-          <div>
-
-            <p className="font-medium text-sm">
-
-              {
-                teacher
-                  ? teacher.name
-                  : "Guest"
-              }
-
-            </p>
-
-          </div>
+          {initial}
 
         </div>
 
+        <div>
+
+          <p className="font-medium text-sm">
+
+            {teacher.name}
+
+          </p>
+
+        </div>
+
+      </div>
+
+      {/* LOGOUT */}
+      <button
+        onClick={handleLogout}
+        className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-600 transition"
+      >
+
+        <LogOut size={16} />
+
+        Logout
+
+      </button>
+
+    </div>
+
+  )
+}
+
+        {/* MOBILE LOGIN */}
+        {
+          !teacher && (
+
+            <Link
+              href="/login"
+              className="sm:hidden bg-black text-white px-4 py-2 rounded-xl text-sm font-medium"
+            >
+
+              Login
+
+            </Link>
+
+          )
+        }
+        {
+  teacher && (
+
+    <button
+      onClick={handleLogout}
+      className="sm:hidden bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-medium"
+    >
+
+      Logout
+
+    </button>
+
+  )
+}
 
         {/* MOBILE MENU */}
         <button
@@ -137,4 +237,3 @@ const Topbar = ({
 };
 
 export default Topbar;
-

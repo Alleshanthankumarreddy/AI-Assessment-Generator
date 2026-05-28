@@ -1,5 +1,6 @@
-import { create } from "zustand";
+"use client";
 
+import { create } from "zustand";
 
 // ================= TYPES =================
 
@@ -16,49 +17,40 @@ interface Teacher {
   institution: string;
 
   institutionLocation: {
+
     city: string;
+
     state: string;
+
     country: string;
+
   };
 
 }
-
 
 // ================= STORE =================
 
 interface AuthState {
 
-  // Teacher Data
   teacher: Teacher | null;
 
-  // Auth Status
   isAuthenticated: boolean;
 
-  // Loading
   loading: boolean;
 
-
-  // LOGIN / REGISTER
   login: (
     teacher: Teacher
   ) => void;
 
-
-  // LOGOUT
   logout: () => void;
 
-
-  // LOADING
   setLoading: (
     loading: boolean
   ) => void;
 
-
-  // RESTORE USER
   restoreAuth: () => void;
 
 }
-
 
 const useAuthStore =
   create<AuthState>((set) => ({
@@ -69,14 +61,16 @@ const useAuthStore =
 
     loading: false,
 
-
     // ================= LOGIN =================
+
     login: (teacher) => {
 
-      // STORE TEACHER
       localStorage.setItem(
+
         "teacher",
+
         JSON.stringify(teacher)
+
       );
 
       set({
@@ -89,11 +83,10 @@ const useAuthStore =
 
     },
 
-
     // ================= LOGOUT =================
+
     logout: () => {
 
-      // REMOVE FROM STORAGE
       localStorage.removeItem(
         "teacher"
       );
@@ -108,14 +101,16 @@ const useAuthStore =
 
     },
 
-
     // ================= LOADING =================
-    setLoading: (loading) =>
 
-      set({ loading }),
+    setLoading: (loading) => {
 
+      set({ loading });
+
+    },
 
     // ================= RESTORE =================
+
     restoreAuth: () => {
 
       const storedTeacher =
@@ -141,6 +136,5 @@ const useAuthStore =
     },
 
   }));
-
 
 export default useAuthStore;
