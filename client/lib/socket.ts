@@ -2,7 +2,9 @@ import { io }
 from "socket.io-client";
 
 const socket = io(
-  "http://localhost:5000",
+
+  "https://ai-assessment-generator-iosd.onrender.com",
+
   {
 
     withCredentials: true,
@@ -12,11 +14,13 @@ const socket = io(
     transports: ["websocket"],
 
   }
+
 );
 
 
 // DEBUG
 socket.on(
+
   "connect",
 
   () => {
@@ -27,7 +31,7 @@ socket.on(
     );
 
   }
-);
 
+);
 
 export default socket;
