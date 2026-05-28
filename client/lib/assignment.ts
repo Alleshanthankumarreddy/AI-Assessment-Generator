@@ -1,5 +1,8 @@
 import api from "./axios";
 
+const TeacherId =
+  localStorage.getItem("TeacherId");
+
 
 // ================= GET ALL =================
 
@@ -8,7 +11,12 @@ export const getAllAssignments =
 
     const response =
       await api.get(
-        "/assignment"
+        "/assignment",
+        {
+          data: {
+            TeacherId,
+          },
+        }
       );
 
     return response.data;
@@ -23,7 +31,12 @@ export const getSingleAssignment =
 
     const response =
       await api.get(
-        `/assignment/${id}`
+        `/assignment/${id}`,
+        {
+          data: {
+            TeacherId,
+          },
+        }
       );
 
     return response.data;
@@ -38,7 +51,12 @@ export const deleteAssignment =
 
     const response =
       await api.delete(
-        `/assignment/${id}`
+        `/assignment/${id}`,
+        {
+          data: {
+            TeacherId,
+          },
+        }
       );
 
     return response.data;
@@ -50,6 +68,11 @@ export const deleteAssignment =
 
 export const createAssignment =
   async (formData: FormData) => {
+
+    formData.append(
+      "TeacherId",
+      TeacherId || ""
+    );
 
     const response =
       await api.post(
@@ -67,14 +90,20 @@ export const createAssignment =
 
 };
 
+
+// ================= QUESTION PAPER =================
+
 export const getQuestionPaper =
   async (id: string) => {
 
     const { data } =
       await api.get(
-
-        `/assignment/question-paper/${id}`
-
+        `/assignment/question-paper/${id}`,
+        {
+          data: {
+            TeacherId,
+          },
+        }
       );
 
     return data;

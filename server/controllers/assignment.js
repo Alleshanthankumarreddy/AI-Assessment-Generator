@@ -16,6 +16,7 @@ const createAssignment = async (
       dueDate,
       instructions,
       content,
+      TeacherId,
     } = req.body;
 
     let questionConfigurations =
@@ -130,7 +131,7 @@ const createAssignment = async (
     const assignment =
       await Assignment.create({
 
-        teacher: req.teacher._id,
+        teacher: TeacherId,
 
         title,
 
@@ -196,11 +197,12 @@ const getAllAssignments = async (
   res
 ) => {
 
+  const {TeacherId} = req.body
   try {
 
     const assignments =
       await Assignment.find({
-        teacher: req.teacher._id,
+        teacher: TeacherId,
       })
       .select(
         "title subject dueDate status createdAt"
@@ -229,12 +231,13 @@ const getSingleAssignment = async (
 
   try {
 
+    const {TecaherId} = req.body
     const { id } = req.params;
 
     const assignment =
       await Assignment.findOne({
         _id: id,
-        teacher: req.teacher._id,
+        teacher: TecaherId,
       }).populate("generatedPaper");
 
     if (!assignment) {
@@ -267,12 +270,13 @@ const deleteAssignment = async (
 
   try {
 
+    const {TecaherId} = req.body
     const { id } = req.params;
 
     const assignment =
       await Assignment.findOne({
         _id: id,
-        teacher: req.teacher._id,
+        teacher: TeacherId,
       });
 
     if (!assignment) {
@@ -318,6 +322,7 @@ const getQuestionPaper = async (
 
   try {
 
+    const {TeacherId} = req.body
     const { id } = req.params;
 
     const assignment =
@@ -326,7 +331,7 @@ const getQuestionPaper = async (
         _id: id,
 
         teacher:
-          req.teacher._id,
+          TeacherId
 
       })
       .populate("generatedPaper")
