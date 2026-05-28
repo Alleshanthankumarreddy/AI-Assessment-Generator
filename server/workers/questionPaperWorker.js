@@ -147,9 +147,6 @@ const worker = new Worker(
         }
       );
 
-      console.log(
-        "Question paper generated"
-      );
 
     } catch (error) {
 

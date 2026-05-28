@@ -1264,7 +1264,7 @@ const handleSubmit = async () => {
 
         </button>
 
-      </div>make this page responsive
+      </div>
 
     </div>
 

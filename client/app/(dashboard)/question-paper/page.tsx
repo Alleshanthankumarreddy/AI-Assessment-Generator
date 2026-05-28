@@ -363,23 +363,6 @@ export default function QuestionPaperPage() {
 
                             <p className="text-gray-800 leading-relaxed whitespace-pre-line text-sm lg:text-base">
 
-                              {/* DIFFICULTY */}
-
-                              <span className="font-semibold text-black">
-
-                                [
-
-                                {
-                                  question.difficulty
-                                    .charAt(0)
-                                    .toUpperCase() +
-
-                                  question.difficulty.slice(1)
-                                }
-
-                                ]
-
-                              </span>
 
                               {" "}
 
