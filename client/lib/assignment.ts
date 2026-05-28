@@ -1,19 +1,25 @@
 import api from "./axios";
 
-const TeacherId =
-  localStorage.getItem("TeacherId");
-
 
 // ================= GET ALL =================
 
 export const getAllAssignments =
   async () => {
 
+    const teacher =
+      JSON.parse(
+        localStorage.getItem("teacher") || "{}"
+      );
+
+    const TeacherId =
+      teacher?._id;
+
+
     const response =
       await api.get(
         "/assignment",
         {
-          data: {
+          params: {
             TeacherId,
           },
         }
@@ -29,11 +35,19 @@ export const getAllAssignments =
 export const getSingleAssignment =
   async (id: string) => {
 
+    const teacher =
+      JSON.parse(
+        localStorage.getItem("teacher") || "{}"
+      );
+
+    const TeacherId =
+      teacher?._id;
+
     const response =
       await api.get(
         `/assignment/${id}`,
         {
-          data: {
+          params: {
             TeacherId,
           },
         }
@@ -48,6 +62,14 @@ export const getSingleAssignment =
 
 export const deleteAssignment =
   async (id: string) => {
+
+    const teacher =
+      JSON.parse(
+        localStorage.getItem("teacher") || "{}"
+      );
+
+    const TeacherId =
+      teacher?._id;
 
     const response =
       await api.delete(
@@ -68,6 +90,14 @@ export const deleteAssignment =
 
 export const createAssignment =
   async (formData: FormData) => {
+
+    const teacher =
+      JSON.parse(
+        localStorage.getItem("teacher") || "{}"
+      );
+
+    const TeacherId =
+      teacher?._id;
 
     formData.append(
       "TeacherId",
@@ -96,11 +126,19 @@ export const createAssignment =
 export const getQuestionPaper =
   async (id: string) => {
 
+    const teacher =
+      JSON.parse(
+        localStorage.getItem("teacher") || "{}"
+      );
+
+    const TeacherId =
+      teacher?._id;
+
     const { data } =
       await api.get(
         `/assignment/question-paper/${id}`,
         {
-          data: {
+          params: {
             TeacherId,
           },
         }

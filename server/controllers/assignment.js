@@ -1,7 +1,13 @@
 import Assignment from "../models/AssignmentModel.js";
 
 import questionPaperQueue from "../queues/questionPaperQueue.js";
+
 import GeneratedPaper from "../models/GeneratedPaper.js";
+
+
+// ======================================================
+// CREATE ASSIGNMENT
+// ======================================================
 
 const createAssignment = async (
   req,
@@ -22,6 +28,8 @@ const createAssignment = async (
     let questionConfigurations =
       req.body.questionConfigurations;
 
+    // ================= PARSE QUESTION CONFIGS =================
+
     if (
       typeof questionConfigurations === "string"
     ) {
@@ -31,10 +39,10 @@ const createAssignment = async (
 
     }
 
-
-  const uploadedFile = req.file
-    ? req.file.path
-    : "";
+    const uploadedFile =
+      req.file
+        ? req.file.path
+        : "";
 
     // ================= VALIDATIONS =================
 
@@ -42,17 +50,20 @@ const createAssignment = async (
       !title ||
       !subject ||
       !dueDate ||
-      !content
+      !content ||
+      !TeacherId
     ) {
 
       return res.status(400).json({
+
         success: false,
+
         message:
           "Please fill all required fields",
+
       });
 
     }
-
 
     if (
       !Array.isArray(
@@ -62,13 +73,15 @@ const createAssignment = async (
     ) {
 
       return res.status(400).json({
+
         success: false,
+
         message:
           "At least one question configuration is required",
+
       });
 
     }
-
 
     // ================= VALIDATE QUESTION CONFIGS =================
 
@@ -81,13 +94,15 @@ const createAssignment = async (
       ) {
 
         return res.status(400).json({
+
           success: false,
+
           message:
             "Invalid question configuration",
+
         });
 
       }
-
 
       if (
         config.numberOfQuestions <= 0 ||
@@ -95,22 +110,23 @@ const createAssignment = async (
       ) {
 
         return res.status(400).json({
+
           success: false,
+
           message:
             "Questions and marks must be greater than 0",
+
         });
 
       }
 
     }
 
-
     // ================= CALCULATE TOTALS =================
 
     let totalQuestions = 0;
 
     let totalMarks = 0;
-
 
     questionConfigurations.forEach(
       (config) => {
@@ -124,7 +140,6 @@ const createAssignment = async (
 
       }
     );
-
 
     // ================= CREATE ASSIGNMENT =================
 
@@ -155,16 +170,15 @@ const createAssignment = async (
 
       });
 
-
     // ================= ADD JOB TO QUEUE =================
 
     await questionPaperQueue.add(
       "generate-paper",
       {
-        assignmentId: assignment._id,
+        assignmentId:
+          assignment._id,
       }
     );
-
 
     // ================= RESPONSE =================
 
@@ -184,45 +198,73 @@ const createAssignment = async (
     console.log(error);
 
     res.status(500).json({
+
       success: false,
-      message: error.message,
+
+      message:
+        error.message,
+
     });
 
   }
 
 };
+
+
+// ======================================================
+// GET ALL ASSIGNMENTS
+// ======================================================
 
 const getAllAssignments = async (
   req,
   res
 ) => {
 
-  const {TeacherId} = req.body
   try {
+
+    const { TeacherId } =
+      req.query;
+      console.log(req.query)
+
+      console.log("TeacherId:", TeacherId);
 
     const assignments =
       await Assignment.find({
+
         teacher: TeacherId,
+
       })
-      .select(
-        "title subject dueDate status createdAt"
-      )
-      .sort({ createdAt: -1 });
+        .select(
+          "title subject dueDate status createdAt"
+        )
+        .sort({
+          createdAt: -1,
+        });
 
     res.status(200).json({
+
       success: true,
+
       assignments,
+
     });
 
   } catch (error) {
 
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
+  console.log(error);
 
-  }
+  res.status(500).json({
+    success: false,
+    message: error.message,
+  });
+
+}
 };
+
+
+// ======================================================
+// GET SINGLE ASSIGNMENT
+// ======================================================
 
 const getSingleAssignment = async (
   req,
@@ -231,37 +273,65 @@ const getSingleAssignment = async (
 
   try {
 
-    const {TecaherId} = req.body
-    const { id } = req.params;
+    const { TeacherId } =
+      req.query;
+
+    const { id } =
+      req.params;
 
     const assignment =
       await Assignment.findOne({
+
         _id: id,
-        teacher: TecaherId,
-      }).populate("generatedPaper");
+
+        teacher: TeacherId,
+
+      }).populate(
+        "generatedPaper"
+      );
 
     if (!assignment) {
+
       return res.status(404).json({
+
         success: false,
+
         message:
           "Assignment not found",
+
       });
+
     }
 
     res.status(200).json({
+
       success: true,
+
       assignment,
+
     });
 
   } catch (error) {
 
+    console.log(error);
+
     res.status(500).json({
+
       success: false,
-      message: error.message,
+
+      message:
+        error.message,
+
     });
 
   }
+
 };
+
+
+// ======================================================
+// DELETE ASSIGNMENT
+// ======================================================
 
 const deleteAssignment = async (
   req,
@@ -270,25 +340,39 @@ const deleteAssignment = async (
 
   try {
 
-    const {TecaherId} = req.body
-    const { id } = req.params;
+    const { TeacherId } =
+      req.body;
+
+    const { id } =
+      req.params;
 
     const assignment =
       await Assignment.findOne({
+
         _id: id,
+
         teacher: TeacherId,
+
       });
 
     if (!assignment) {
+
       return res.status(404).json({
+
         success: false,
+
         message:
           "Assignment not found",
+
       });
+
     }
 
-    // Delete generated paper
-    if (assignment.generatedPaper) {
+    // ================= DELETE GENERATED PAPER =================
+
+    if (
+      assignment.generatedPaper
+    ) {
 
       await GeneratedPaper.findByIdAndDelete(
         assignment.generatedPaper
@@ -296,24 +380,42 @@ const deleteAssignment = async (
 
     }
 
-    // Delete assignment
-    await Assignment.findByIdAndDelete(id);
+    // ================= DELETE ASSIGNMENT =================
+
+    await Assignment.findByIdAndDelete(
+      id
+    );
 
     res.status(200).json({
+
       success: true,
+
       message:
         "Assignment deleted successfully",
+
     });
 
   } catch (error) {
 
+    console.log(error);
+
     res.status(500).json({
+
       success: false,
-      message: error.message,
+
+      message:
+        error.message,
+
     });
 
   }
+
 };
+
+
+// ======================================================
+// GET QUESTION PAPER
+// ======================================================
 
 const getQuestionPaper = async (
   req,
@@ -322,23 +424,27 @@ const getQuestionPaper = async (
 
   try {
 
-    const {TeacherId} = req.body
-    const { id } = req.params;
+    const { TeacherId } =
+      req.query;
+
+    const { id } =
+      req.params;
 
     const assignment =
       await Assignment.findOne({
 
         _id: id,
 
-        teacher:
-          TeacherId
+        teacher: TeacherId,
 
       })
-      .populate("generatedPaper")
-      .populate(
-        "teacher",
-        "institution name"
-      );
+        .populate(
+          "generatedPaper"
+        )
+        .populate(
+          "teacher",
+          "institution name"
+        );
 
     if (!assignment) {
 
@@ -418,4 +524,16 @@ const getQuestionPaper = async (
 };
 
 
-export { createAssignment, getAllAssignments, getSingleAssignment, deleteAssignment, getQuestionPaper };
+export {
+
+  createAssignment,
+
+  getAllAssignments,
+
+  getSingleAssignment,
+
+  deleteAssignment,
+
+  getQuestionPaper,
+
+};
