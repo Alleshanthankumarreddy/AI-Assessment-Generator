@@ -3,7 +3,7 @@ from "socket.io-client";
 
 const socket = io(
 
-  "https://ai-assessment-generator-iosd.onrender.com",
+  "http://localhost:5000",
 
   {
 

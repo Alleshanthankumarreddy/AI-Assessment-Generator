@@ -377,6 +377,17 @@ const deleteAssignment = async (
 
       });
 
+      if (
+        assignment.status === "pending" ||
+        assignment.status === "processing"
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Assignment generation is in progress and cannot be deleted",
+        });
+      }
+
     if (!assignment) {
 
       return res.status(404).json({

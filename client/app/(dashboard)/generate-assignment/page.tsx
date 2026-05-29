@@ -304,6 +304,11 @@ formData.append(
 
     );
 
+    setTimeout(() => {
+      setLoading(false);
+      router.push("/assignments");
+    }, 5000);
+
   } catch (error: any) {
 
     console.log(error);
