@@ -2,19 +2,12 @@ import { io }
 from "socket.io-client";
 
 const socket = io(
-
-  "https://ai-assessment-generator-delta.vercel.app/",
-
+  "https://ai-assessment-generator-iosd.onrender.com",
   {
-
     withCredentials: true,
-
     autoConnect: true,
-
     transports: ["websocket"],
-
   }
-
 );
 
 

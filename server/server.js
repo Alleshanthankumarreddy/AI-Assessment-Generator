@@ -21,9 +21,8 @@ const app = express();
 // =======================
 
 const allowedOrigins = [
-
+  "http://localhost:3000",
   "https://ai-assessment-generator-delta.vercel.app",
-
 ];
 
 app.use(
@@ -75,18 +74,13 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-
-  origin: [
-
-    "https://ai-assessment-generator-delta.vercel.app",
-
-  ],
-
-  methods: ["GET", "POST"],
-
-  credentials: true,
-
-},
+    origin: [
+      "http://localhost:3000",
+      "https://ai-assessment-generator-delta.vercel.app",
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
 });
 
 initSocket(io);
