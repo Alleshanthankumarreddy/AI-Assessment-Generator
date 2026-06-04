@@ -63,48 +63,34 @@ const worker = new Worker(
       );
 
 
-      // PROMPT
-      const prompt =
-        buildQuestionPaperPrompt(
-          assignment
-        );
+     console.time("Total Job");
 
+      console.time("Prompt Build");
+      const prompt = buildQuestionPaperPrompt(assignment);
+      console.timeEnd("Prompt Build");
 
-      // AI
+      console.time("Gemini");
       const aiResponse =
         await generateQuestionPaper(
           prompt,
           assignment.uploadedFile
         );
+      console.timeEnd("Gemini");
 
-
-      // CLEAN
-      const cleanedResponse =
-        aiResponse
-          .replace(/```json/g, "")
-          .replace(/```/g, "")
-          .trim();
-
-
+      console.time("JSON Parse");
       const parsedResponse =
-        JSON.parse(
-          cleanedResponse
-        );
+        JSON.parse(cleanedResponse);
+      console.timeEnd("JSON Parse");
 
-
-      // STORE PAPER
+      console.time("DB Save");
       const generatedPaper =
         await GeneratedPaper.create({
-
-          assignment:
-            assignment._id,
-
-          sections:
-            parsedResponse.sections,
-
+          assignment: assignment._id,
+          sections: parsedResponse.sections,
         });
+      console.timeEnd("DB Save");
 
-
+      console.timeEnd("Total Job");
       // COMPLETE
       assignment.generatedPaper =
         generatedPaper._id;
