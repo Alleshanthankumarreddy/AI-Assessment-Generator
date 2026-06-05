@@ -190,14 +190,34 @@ if (missingFields.length > 0) {
 
     // ================= ADD JOB TO QUEUE =================
 
-    await questionPaperQueue.add(
-      "question-paper-generation",
-      {
-        assignmentId:
-          assignment._id,
-      }
-    );
+    // ================= ADD JOB TO QUEUE =================
 
+const job =
+  await questionPaperQueue.add(
+    "question-paper-generation",
+    {
+      assignmentId:
+        assignment._id,
+    }
+  );
+
+console.log(
+  "================================="
+);
+
+console.log(
+  "Job Added:",
+  job.id
+);
+
+console.log(
+  "Assignment ID:",
+  assignment._id.toString()
+);
+
+console.log(
+  "================================="
+);
     // ================= RESPONSE =================
 
     res.status(201).json({
