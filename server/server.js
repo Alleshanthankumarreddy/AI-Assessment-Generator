@@ -90,6 +90,7 @@ initSocket(io);
 // Database Connection
 // =======================
 connectDB();
+console.log("server version");
 
 
 
