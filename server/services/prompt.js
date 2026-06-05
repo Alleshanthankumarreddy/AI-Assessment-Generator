@@ -20,8 +20,6 @@ ${assignment.title}
 Instructions:
 ${assignment.instructions}
 
-Study Material / Content:
-${assignment.content}
 
 =====================
 QUESTION GENERATION RULES

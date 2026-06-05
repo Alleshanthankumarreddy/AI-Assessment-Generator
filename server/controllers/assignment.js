@@ -21,7 +21,6 @@ const createAssignment = async (
       subject,
       dueDate,
       instructions,
-      content,
       TeacherId,
     } = req.body;
 
@@ -60,10 +59,6 @@ if (!subject) {
 
 if (!dueDate) {
   missingFields.push("dueDate");
-}
-
-if (!content) {
-  missingFields.push("content");
 }
 
 if (!TeacherId) {
@@ -187,8 +182,6 @@ if (missingFields.length > 0) {
 
         instructions:
           instructions || "",
-
-        content,
 
         uploadedFile:
           uploadedFile || "",

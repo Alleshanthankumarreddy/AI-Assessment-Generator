@@ -73,12 +73,6 @@ const assignmentSchema = new mongoose.Schema(
       default: "",
     },
 
-    // syllabus / notes / text source
-    content: {
-      type: String,
-      required: true,
-    },
-
     uploadedFile: {
       type: String,
       default: "",

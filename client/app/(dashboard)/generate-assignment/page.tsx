@@ -42,9 +42,6 @@ const GenerateAssignmentPage = () => {
   const [instructions, setInstructions] =
     useState("");
 
-  const [content, setContent] =
-    useState("");
-
   const [selectedFile, setSelectedFile] =
     useState<File | null>(null);
 
@@ -234,11 +231,6 @@ formData.append(
       instructions
     );
 
-    formData.append(
-      "content",
-      content
-    );
-
 
     // ================= QUESTION CONFIGURATIONS =================
 
@@ -345,10 +337,6 @@ formData.append(
     }
 
     if (dueDate) {
-      progress += 15;
-    }
-
-    if (content.trim()) {
       progress += 15;
     }
 
@@ -1247,9 +1235,9 @@ formData.append(
 
             <textarea
               rows={5}
-              value={content}
+              value={instructions}
               onChange={(e) =>
-                setContent(
+                setInstructions(
                   e.target.value
                 )
               }

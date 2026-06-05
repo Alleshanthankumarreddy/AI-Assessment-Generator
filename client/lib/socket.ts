@@ -2,11 +2,10 @@ import { io }
 from "socket.io-client";
 
 const socket = io(
-  "https://ai-assessment-generator-iosd.onrender.com",
+  "https://ai-assessment-generator-686f.onrender.com",
   {
     withCredentials: true,
     autoConnect: true,
-    transports: ["websocket"],
   }
 );
 
