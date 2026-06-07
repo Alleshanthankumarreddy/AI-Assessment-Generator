@@ -32,47 +32,47 @@ const Sidebar = ({
 
     <>
 
-      {/* OVERLAY */}
-      {
-        mobileOpen && (
+        {/* OVERLAY */}
+        {
+          mobileOpen && (
 
-          <div
-            onClick={() =>
-              setMobileOpen(false)
+            <div
+              onClick={() =>
+                setMobileOpen(false)
+              }
+              className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+            />
+
+          )
+        }
+
+        {/* SIDEBAR */}
+        <aside
+          className={`
+
+            fixed top-0 right-0 z-50
+            w-[260px] h-screen
+            bg-[#f8f8f8]
+            border-l border-gray-200
+            flex flex-col justify-between
+            p-5
+            transition-transform duration-300
+
+            lg:left-0
+            lg:border-r
+            lg:border-l-0
+            lg:translate-x-0
+
+            ${
+              mobileOpen
+
+                ? "translate-x-0"
+
+                : "translate-x-full"
             }
-            className="fixed inset-0 bg-black/40 z-40 lg:hidden"
-          />
 
-        )
-      }
-
-      {/* SIDEBAR */}
-      <aside
-        className={`
-
-          fixed top-0 right-0 z-50
-          w-[260px] h-screen
-          bg-[#f8f8f8]
-          border-l border-gray-200
-          flex flex-col justify-between
-          p-5
-          transition-transform duration-300
-
-          lg:left-0
-          lg:border-r
-          lg:border-l-0
-          lg:translate-x-0
-
-          ${
-            mobileOpen
-
-              ? "translate-x-0"
-
-              : "translate-x-full"
-          }
-
-        `}
-      >
+          `}
+        >
 
         {/* TOP */}
         <div>
@@ -100,17 +100,19 @@ const Sidebar = ({
           {/* LOGO */}
           <div className="flex items-center gap-3 mb-8">
 
-            <Image
-              src={VedaAI}
-              alt="VedaAI"
-              width={42}
-              height={42}
-              className="rounded-xl"
-            />
+              <div className="rounded-x scale-y-[-1]">
+                <Image
+                  src={VedaAI}
+                  alt="VedaAI"
+                  width={42}
+                  height={42}
+                  className="rounded-xl scale-x-[-1]"
+                />
+              </div>
 
             <h1 className="text-2xl font-bold text-gray-800">
 
-              VedaAI
+              Assignment Generator
 
             </h1>
 

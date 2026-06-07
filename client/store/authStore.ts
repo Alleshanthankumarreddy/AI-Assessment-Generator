@@ -48,7 +48,6 @@ interface AuthState {
     loading: boolean
   ) => void;
 
-  restoreAuth: () => void;
 
 }
 
@@ -65,14 +64,6 @@ const useAuthStore =
 
     login: (teacher) => {
 
-      localStorage.setItem(
-
-        "teacher",
-
-        JSON.stringify(teacher)
-
-      );
-
       set({
 
         teacher,
@@ -86,10 +77,6 @@ const useAuthStore =
     // ================= LOGOUT =================
 
     logout: () => {
-
-      localStorage.removeItem(
-        "teacher"
-      );
 
       set({
 
@@ -109,31 +96,6 @@ const useAuthStore =
 
     },
 
-    // ================= RESTORE =================
-
-    restoreAuth: () => {
-
-      const storedTeacher =
-        localStorage.getItem(
-          "teacher"
-        );
-
-      if (storedTeacher) {
-
-        set({
-
-          teacher:
-            JSON.parse(
-              storedTeacher
-            ),
-
-          isAuthenticated: true,
-
-        });
-
-      }
-
-    },
 
   }));
 

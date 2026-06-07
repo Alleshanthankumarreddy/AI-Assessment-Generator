@@ -15,12 +15,14 @@ const assignmentRoutes = express.Router();
 
 assignmentRoutes.post(
   "/create",
+  isAuthenticated,
   upload.single("uploadedFile"),
   createAssignment
 );
 
 assignmentRoutes.get(
   "/",
+  isAuthenticated,
   getAllAssignments
 );
 
@@ -28,6 +30,7 @@ assignmentRoutes.get(
 // GET SINGLE
 assignmentRoutes.get(
   "/:id",
+  isAuthenticated,
   getSingleAssignment
 );
 
@@ -35,12 +38,14 @@ assignmentRoutes.get(
 // DELETE
 assignmentRoutes.delete(
   "/:id",
+  isAuthenticated,
   deleteAssignment
 );
 
 
 assignmentRoutes.get(
   "/question-paper/:id",
+  isAuthenticated,
   getQuestionPaper
 );
 

@@ -6,8 +6,7 @@ from "../../../store/assignmentStore";
 import { useRef }
 from "react";
 
-import html2canvas
-from "html2canvas";
+import { useReactToPrint } from "react-to-print";
 
 import { jsPDF }
 from "jspdf";
@@ -22,33 +21,22 @@ export default function QuestionPaperPage() {
 
   } = useAssignmentStore();
 
-  const paperRef =
-    useRef(null);
+    const paperRef =
+  useRef<HTMLDivElement>(null);
 
-  // ================= EMPTY =================
+  // ================= DOWNLOAD PDF =================
 
-  if (!generatedPaper) {
-
-    return (
-
-      <div className="p-10 lg:p-20 text-center">
-
-        <h1 className="text-2xl lg:text-3xl font-bold text-black">
-
-          No Question Paper Found
-
-        </h1>
-
-      </div>
-
-    );
-
-  }
+  const handlePrint =
+  useReactToPrint({
+    contentRef: paperRef,
+    documentTitle:
+      "question-paper",
+  });
 
   // ================= TOTAL MARKS =================
 
   const totalMarks =
-    generatedPaper.sections.reduce(
+    generatedPaper?.sections.reduce(
 
       (sectionTotal, section) =>
 
@@ -60,70 +48,25 @@ export default function QuestionPaperPage() {
 
             questionTotal +
             question.marks,
-
           0
-
         ),
-
       0
+    ) || 0;
 
+ 
+
+  // ================= EMPTY =================
+ if (!generatedPaper) {
+    return (
+      <div className="p-10 lg:p-20 text-center">
+        <h1 className="text-2xl lg:text-3xl font-bold text-black">
+          No Question Paper Found
+        </h1>
+      </div>
     );
+  }
 
-  // ================= DOWNLOAD PDF =================
-
-  const downloadPDF =
-    async () => {
-
-      if (!paperRef.current)
-        return;
-
-      const canvas =
-        await html2canvas(
-          paperRef.current,
-          {
-            scale: 2,
-            useCORS: true,
-            backgroundColor:
-              "#ffffff",
-          }
-        );
-
-      const imgData =
-        canvas.toDataURL(
-          "image/png"
-        );
-
-      const pdf =
-        new jsPDF({
-          orientation:
-            "portrait",
-          unit: "mm",
-          format: "a4",
-        });
-
-      const pdfWidth =
-        pdf.internal.pageSize.getWidth();
-
-      const pdfHeight =
-        (canvas.height *
-          pdfWidth) /
-        canvas.width;
-
-      pdf.addImage(
-        imgData,
-        "PNG",
-        0,
-        0,
-        pdfWidth,
-        pdfHeight
-      );
-
-      pdf.save(
-        "question-paper.pdf"
-      );
-
-    };
-
+  
   return (
 
     <div className="space-y-4 lg:space-y-6 px-3 lg:px-0 pb-10">
@@ -158,7 +101,7 @@ export default function QuestionPaperPage() {
 
           {/* BUTTON */}
           <button
-            onClick={downloadPDF}
+            onClick={handlePrint}
             className="bg-white text-black px-5 py-3 lg:px-6 lg:py-3 rounded-2xl font-semibold flex items-center justify-center gap-3 hover:scale-105 transition-all duration-300 shadow-lg w-full lg:w-fit text-sm lg:text-base"
           >
 
@@ -174,38 +117,47 @@ export default function QuestionPaperPage() {
 
       <div
         ref={paperRef}
-        className="bg-white rounded-[28px] lg:rounded-[36px] shadow-xl border border-gray-200 p-5 lg:p-16 max-w-5xl mx-auto"
+        className="paper-container bg-white shadow-xl border border-gray-300 mx-auto"
+        style={{
+          width: "210mm",
+          minHeight: "297mm",
+          padding: "20mm",
+          boxSizing: "border-box",
+        }}
       >
 
-        {/* ================= SCHOOL DETAILS ================= */}
+        {/* HEADER */}
 
-        <div className="text-center">
+        <div className="text-center border-b-2 border-gray-400 pb-6">
 
-          <h1 className="text-2xl lg:text-4xl font-bold text-black leading-tight">
+          <h1 className="text-4xl font-bold text-black">
 
             {
               selectedAssignment?.institution ||
-
-              "VedaAI Assessment System"
+              "Assessment System"
             }
 
           </h1>
 
-          <p className="text-lg lg:text-2xl mt-4 font-medium text-black">
+          <p className="text-xl mt-3 font-medium">
+
+            Question Paper
+
+          </p>
+
+          <p className="text-lg mt-2">
 
             Subject:
             {" "}
-            {
-              selectedAssignment?.subject
-            }
+            {selectedAssignment?.subject}
 
           </p>
 
         </div>
 
-        {/* ================= PAPER INFO ================= */}
+        {/* PAPER INFO */}
 
-        <div className="flex flex-col lg:flex-row lg:justify-between gap-3 mt-10 lg:mt-14 text-black font-medium text-sm lg:text-base">
+        <div className="flex justify-between mt-8 text-black font-medium">
 
           <p>
 
@@ -214,11 +166,9 @@ export default function QuestionPaperPage() {
 
             {
               selectedAssignment?.dueDate
-
                 ? new Date(
                     selectedAssignment.dueDate
                   ).toLocaleDateString()
-
                 : "N/A"
             }
 
@@ -234,55 +184,64 @@ export default function QuestionPaperPage() {
 
         </div>
 
-        {/* ================= INSTRUCTION ================= */}
+        {/* INSTRUCTIONS */}
 
-        <p className="mt-6 lg:mt-8 text-black text-sm lg:text-lg leading-relaxed">
+        <div className="mt-8">
 
-          All questions are compulsory unless stated otherwise.
+          <h3 className="font-bold text-lg">
 
-        </p>
+            Instructions
 
-        {/* ================= STUDENT DETAILS ================= */}
+          </h3>
 
-        <div className="mt-8 lg:mt-10 space-y-3 text-gray-800 text-sm lg:text-base">
+          <ul className="list-disc ml-6 mt-2">
+
+            <li>
+              All questions are compulsory.
+            </li>
+
+            <li>
+              Read all questions carefully.
+            </li>
+
+            <li>
+              Write neat and legible answers.
+            </li>
+
+          </ul>
+
+        </div>
+
+        {/* STUDENT DETAILS */}
+
+        <div className="grid grid-cols-2 gap-8 mt-10">
 
           <p>
-
             Name:
-            {" "}
-            __________________
-
+            _______________________
           </p>
 
           <p>
-
-            Roll Number:
-            {" "}
-            ___________
-
+            Roll No:
+            _______________________
           </p>
 
           <p>
-
             Class:
-            {" "}
-            ___________
+            _______________________
+          </p>
 
-            {" "}
-
+          <p>
             Section:
-            {" "}
-            ______
-
+            _______________________
           </p>
 
         </div>
 
-        {/* ================= SECTIONS ================= */}
+        {/* SECTIONS */}
 
         {
           generatedPaper.sections.map(
-
             (
               section,
               sectionIndex
@@ -290,18 +249,15 @@ export default function QuestionPaperPage() {
 
               <div
                 key={sectionIndex}
-                className="mt-12 lg:mt-16"
+                className="mt-12"
               >
-
-                {/* SECTION TITLE */}
 
                 <div className="text-center">
 
-                  <h2 className="text-2xl lg:text-3xl font-bold text-black">
+                  <h2 className="text-2xl font-bold">
 
                     Section
                     {" "}
-
                     {
                       String.fromCharCode(
                         65 + sectionIndex
@@ -312,17 +268,15 @@ export default function QuestionPaperPage() {
 
                 </div>
 
-                {/* SECTION INFO */}
+                <div className="mt-6">
 
-                <div className="mt-8 lg:mt-10">
-
-                  <h3 className="text-lg lg:text-xl font-semibold text-black">
+                  <h3 className="font-semibold text-xl">
 
                     {section.title}
 
                   </h3>
 
-                  <p className="italic text-black mt-2 text-sm lg:text-base leading-relaxed">
+                  <p className="italic mt-2">
 
                     {section.instruction}
 
@@ -330,13 +284,10 @@ export default function QuestionPaperPage() {
 
                 </div>
 
-                {/* QUESTIONS */}
-
-                <div className="mt-8 lg:mt-10 space-y-6 lg:space-y-8">
+                <div className="mt-8 space-y-6">
 
                   {
                     section.questions.map(
-
                       (
                         question,
                         questionIndex
@@ -344,46 +295,33 @@ export default function QuestionPaperPage() {
 
                         <div
                           key={questionIndex}
-                          className="flex items-start gap-3 lg:gap-4"
+                          className="question-block flex gap-4"
                         >
 
-                          {/* NUMBER */}
-
-                          <p className="font-medium text-black text-sm lg:text-base">
+                          <div>
 
                             {
                               questionIndex + 1
                             }.
 
-                          </p>
-
-                          {/* QUESTION */}
+                          </div>
 
                           <div className="flex-1">
 
-                            <p className="text-gray-800 leading-relaxed whitespace-pre-line text-sm lg:text-base">
-
-
-                              {" "}
+                            <p className="leading-8 whitespace-pre-line">
 
                               {
                                 question.questionText
                               }
 
-                              {/* MARKS */}
-
-                              <span className="font-semibold text-black">
+                              <span className="font-semibold">
 
                                 {" "}
-
                                 [
-
                                 {
                                   question.marks
                                 }
-
                                 {" "}
-
                                 Marks]
 
                               </span>
@@ -395,7 +333,6 @@ export default function QuestionPaperPage() {
                         </div>
 
                       )
-
                     )
                   }
 
@@ -404,17 +341,16 @@ export default function QuestionPaperPage() {
               </div>
 
             )
-
           )
         }
 
-        {/* ================= END ================= */}
+        {/* FOOTER */}
 
-        <div className="mt-10 lg:mt-12">
+        <div className="mt-16 border-t pt-6 text-center">
 
-          <p className="font-semibold text-gray-800 text-sm lg:text-base">
+          <p className="font-semibold">
 
-            End of Question Paper
+            ***** End of Question Paper *****
 
           </p>
 

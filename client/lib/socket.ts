@@ -2,7 +2,7 @@ import { io }
 from "socket.io-client";
 
 const socket = io(
-  "https://ai-assessment-generator-686f.onrender.com",
+  "http://localhost:5000",
   {
     withCredentials: true,
     autoConnect: true,

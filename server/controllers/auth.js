@@ -51,13 +51,17 @@ const registerTeacher = async (req, res) => {
       }
     );
 
-    // Cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    const isProduction =
+  process.env.NODE_ENV === "production";
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction
+      ? "none"
+      : "strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
 
     const safeTeacher = {
 
@@ -138,13 +142,17 @@ const loginTeacher = async (req, res) => {
       }
     );
 
-    // Cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    const isProduction =
+  process.env.NODE_ENV === "production";
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction
+      ? "none"
+      : "strict",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
 
     const safeTeacher = {
 
@@ -195,14 +203,15 @@ const logoutTeacher = async (
 
   try {
 
+    const isProduction =
+  process.env.NODE_ENV === "production";
+
     res.clearCookie("token", {
-
       httpOnly: true,
-
-      secure: true,
-
-      sameSite: "none",
-
+      secure: isProduction,
+      sameSite: isProduction
+        ? "none"
+        : "strict",
     });
 
     return res.status(200).json({
@@ -229,8 +238,41 @@ const logoutTeacher = async (
 
 };
 
+
+// ================= GET CURRENT TEACHER =================
+
+const getCurrentTeacher = async (
+  req,
+  res
+) => {
+
+  try {
+
+    res.status(200).json({
+
+      success: true,
+
+      teacher: req.teacher,
+
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+
+      success: false,
+
+      message: error.message,
+
+    });
+
+  }
+
+};
+
 export {
   registerTeacher,
   loginTeacher,
   logoutTeacher,
+  getCurrentTeacher,
 };

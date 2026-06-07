@@ -6,24 +6,7 @@ import api from "./axios";
 export const getAllAssignments =
   async () => {
 
-    const teacher =
-      JSON.parse(
-        localStorage.getItem("teacher") || "{}"
-      );
-
-    const TeacherId =
-      teacher?._id;
-
-
-    const response =
-      await api.get(
-        "/assignment",
-        {
-          params: {
-            TeacherId,
-          },
-        }
-      );
+    const response = await api.get("/assignment");
 
     return response.data;
 
@@ -35,23 +18,8 @@ export const getAllAssignments =
 export const getSingleAssignment =
   async (id: string) => {
 
-    const teacher =
-      JSON.parse(
-        localStorage.getItem("teacher") || "{}"
-      );
-
-    const TeacherId =
-      teacher?._id;
-
     const response =
-      await api.get(
-        `/assignment/${id}`,
-        {
-          params: {
-            TeacherId,
-          },
-        }
-      );
+      await api.get(`/assignment/${id}`);
 
     return response.data;
 
@@ -63,23 +31,7 @@ export const getSingleAssignment =
 export const deleteAssignment =
   async (id: string) => {
 
-    const teacher =
-      JSON.parse(
-        localStorage.getItem("teacher") || "{}"
-      );
-
-    const TeacherId =
-      teacher?._id;
-
-    const response =
-      await api.delete(
-        `/assignment/${id}`,
-        {
-          data: {
-            TeacherId,
-          },
-        }
-      );
+    const response = await api.delete(`/assignment/${id}`);
 
     return response.data;
 
@@ -114,23 +66,8 @@ export const createAssignment =
 export const getQuestionPaper =
   async (id: string) => {
 
-    const teacher =
-      JSON.parse(
-        localStorage.getItem("teacher") || "{}"
-      );
 
-    const TeacherId =
-      teacher?._id;
-
-    const { data } =
-      await api.get(
-        `/assignment/question-paper/${id}`,
-        {
-          params: {
-            TeacherId,
-          },
-        }
-      );
+    const { data } =  await api.get(`/assignment/question-paper/${id}`);
 
     return data;
 

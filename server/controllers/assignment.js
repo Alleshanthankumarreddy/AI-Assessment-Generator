@@ -5,10 +5,6 @@ import questionPaperQueue from "../queues/questionPaperQueue.js";
 import GeneratedPaper from "../models/GeneratedPaper.js";
 
 
-// ======================================================
-// CREATE ASSIGNMENT
-// ======================================================
-
 const createAssignment = async (
   req,
   res
@@ -21,8 +17,9 @@ const createAssignment = async (
       subject,
       dueDate,
       instructions,
-      TeacherId,
     } = req.body;
+
+    const TeacherId = req.teacher._id;
 
     let questionConfigurations =
       req.body.questionConfigurations;
@@ -47,43 +44,43 @@ const createAssignment = async (
 
     // ================= VALIDATIONS =================
 
-const missingFields = [];
+    const missingFields = [];
 
-if (!title) {
-  missingFields.push("title");
-}
+    if (!title) {
+      missingFields.push("title");
+    }
 
-if (!subject) {
-  missingFields.push("subject");
-}
+    if (!subject) {
+      missingFields.push("subject");
+    }
 
-if (!dueDate) {
-  missingFields.push("dueDate");
-}
+    if (!dueDate) {
+      missingFields.push("dueDate");
+    }
 
-if (!TeacherId) {
-  missingFields.push("TeacherId");
-}
+    if (!TeacherId) {
+      missingFields.push("TeacherId");
+    }
 
-if (missingFields.length > 0) {
+    if (missingFields.length > 0) {
 
-  console.log(
-    "Missing Fields:",
-    missingFields
-  );
+      console.log(
+        "Missing Fields:",
+        missingFields
+      );
 
-  return res.status(400).json({
+      return res.status(400).json({
 
-    success: false,
+        success: false,
 
-    message:
-      "Missing required fields",
+        message:
+          "Missing required fields",
 
-    missingFields,
+        missingFields,
 
-  });
+      });
 
-}
+    }
 
     if (
       !Array.isArray(
@@ -260,8 +257,7 @@ const getAllAssignments = async (
 
   try {
 
-    const { TeacherId } =
-      req.query;
+    const TeacherId = req.teacher._id;
   
     const assignments =
       await Assignment.find({
@@ -308,8 +304,7 @@ const getSingleAssignment = async (
 
   try {
 
-    const { TeacherId } =
-      req.query;
+    const TeacherId = req.teacher._id;
 
     const { id } =
       req.params;
@@ -375,8 +370,7 @@ const deleteAssignment = async (
 
   try {
 
-    const { TeacherId } =
-      req.body;
+    const TeacherId = req.teacher._id;
 
     const { id } =
       req.params;
@@ -470,8 +464,7 @@ const getQuestionPaper = async (
 
   try {
 
-    const { TeacherId } =
-      req.query;
+    const TeacherId = req.teacher._id;
 
     const { id } =
       req.params;
