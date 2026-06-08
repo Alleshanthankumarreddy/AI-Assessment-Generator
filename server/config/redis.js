@@ -35,11 +35,12 @@
 
 import Redis from "ioredis";
 
-const redisConnection = new Redis({
-  host: "127.0.0.1",
-  port: 6379,
-  maxRetriesPerRequest: null,
-});
+const redisConnection = new Redis(
+  process.env.REDIS_URL,
+  {
+    maxRetriesPerRequest: null,
+  }
+);
 
 redisConnection.on("connect", () => {
   console.log("Redis Connected");
