@@ -215,7 +215,7 @@ const { login } =
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Enter password"
-                className="bg-transparent outline-none ml-3 w-full"
+                className="bg-transparent outline-none ml-3 w-full text-black placeholder:text-gray-500"
               />
 
             </div>
@@ -243,7 +243,7 @@ const { login } =
                 value={formData.subject}
                 onChange={handleChange}
                 placeholder="Enter subject"
-                className="bg-transparent outline-none ml-3 w-full"
+                className="bg-transparent outline-none ml-3 w-full text-black placeholder:text-gray-500"
               />
 
             </div>
@@ -271,7 +271,7 @@ const { login } =
                 value={formData.institution}
                 onChange={handleChange}
                 placeholder="Enter institution"
-                className="bg-transparent outline-none ml-3 w-full"
+                className="bg-transparent outline-none ml-3 w-full text-black placeholder:text-gray-500"
               />
 
             </div>
@@ -293,7 +293,7 @@ const { login } =
               onChange={
                 handleLocationChange
               }
-              className="bg-[#f7f7f7] rounded-2xl px-4 py-4 border border-black/5 outline-none"
+              className="bg-[#f7f7f7] rounded-2xl px-4 py-4 border border-black/5 outline-none text-black placeholder:text-gray-500"
             />
 
             <input
@@ -307,7 +307,7 @@ const { login } =
               onChange={
                 handleLocationChange
               }
-              className="bg-[#f7f7f7] rounded-2xl px-4 py-4 border border-black/5 outline-none"
+              className="bg-[#f7f7f7] rounded-2xl px-4 py-4 border border-black/5 outline-none text-black placeholder:text-gray-500"
             />
 
             <input
@@ -321,7 +321,7 @@ const { login } =
               onChange={
                 handleLocationChange
               }
-              className="bg-[#f7f7f7] rounded-2xl px-4 py-4 border border-black/5 outline-none"
+              className="bg-[#f7f7f7] rounded-2xl px-4 py-4 border border-black/5 outline-none text-black placeholder:text-gray-500"
             />
 
           </div>
