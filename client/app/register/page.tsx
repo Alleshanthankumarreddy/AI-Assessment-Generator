@@ -16,6 +16,7 @@ import {
 
 export default function RegisterPage() {
 const router = useRouter();
+const [loading, setLoading] = useState(false);
 const { login } =
   useAuthStore();
   const [formData, setFormData] =
@@ -73,6 +74,7 @@ const { login } =
   const handleSubmit = async (
   e: React.FormEvent
 ) => {
+  setLoading(true);
 
   e.preventDefault();
 
@@ -111,6 +113,7 @@ const { login } =
 
   }
 
+  setLoading(false);
 };
 
   return (
@@ -328,9 +331,9 @@ const { login } =
 
 
           {/* BUTTON */}
-          <button className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:scale-[1.02] transition-all duration-300 shadow-xl">
+          <button disabled={loading} className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:scale-[1.02] transition-all duration-300 shadow-xl">
 
-            Create Account
+            {loading ? "Registering..." : "Register"}
 
           </button>
 

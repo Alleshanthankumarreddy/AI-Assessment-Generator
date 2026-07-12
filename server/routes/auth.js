@@ -7,12 +7,14 @@ import {
   getCurrentTeacher
 } from "../controllers/auth.js";
 import isAuthenticated from "../middleware/authMiddelware.js";
+import { authLimiter } from "../middleware/rateLimiter.js";
+
 
 const Authrouter = express.Router();
 
-Authrouter.post("/register", registerTeacher);
+Authrouter.post("/register",authLimiter, registerTeacher);
 
-Authrouter.post("/login", loginTeacher);
+Authrouter.post("/login", authLimiter, loginTeacher);
 
 Authrouter.get("/logout", logoutTeacher);
 

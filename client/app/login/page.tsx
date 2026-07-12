@@ -12,6 +12,7 @@ import {
 
 export default function LoginPage() {
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
 const { login } =
   useAuthStore();
   const [formData, setFormData] =
@@ -37,7 +38,7 @@ const { login } =
 const handleSubmit = async (
   e: React.FormEvent
 ) => {
-
+  setLoading(true);
   e.preventDefault();
 
   try {
@@ -75,6 +76,7 @@ const handleSubmit = async (
 
   }
 
+  setLoading(false);
 };
 
 
@@ -161,9 +163,9 @@ const handleSubmit = async (
 
 
           {/* BUTTON */}
-          <button className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:scale-[1.02] transition-all duration-300 shadow-xl">
+          <button disabled={loading} className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:scale-[1.02] transition-all duration-300 shadow-xl">
 
-            Login
+            {loading ? "Logging in..." : "Login"}
 
           </button>
 
