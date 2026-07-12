@@ -17,6 +17,16 @@ import {
 export default function RegisterPage() {
 const router = useRouter();
 const [loading, setLoading] = useState(false);
+const [errors, setErrors] = useState({
+  name: "",
+  email: "",
+  password: "",
+  subject: "",
+  institution: "",
+  city: "",
+  state: "",
+  country: "",
+});
 const { login } =
   useAuthStore();
   const [formData, setFormData] =
@@ -44,10 +54,15 @@ const { login } =
     const { name, value } =
       e.target;
 
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
 
   };
 
@@ -59,46 +74,121 @@ const { login } =
     const { name, value } =
       e.target;
 
-    setFormData({
-      ...formData,
-
+    setFormData((prev) => ({
+      ...prev,
       institutionLocation: {
-        ...formData.institutionLocation,
+        ...prev.institutionLocation,
         [name]: value,
       },
-    });
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
 
   };
 
+  const validate = () => {
+
+  const newErrors = {
+    name: "",
+    email: "",
+    password: "",
+    subject: "",
+    institution: "",
+    city: "",
+    state: "",
+    country: "",
+  };
+
+  let isValid = true;
+
+  if (!formData.name.trim()) {
+    newErrors.name = "Name is required";
+    isValid = false;
+  } else if (formData.name.trim().length < 3) {
+    newErrors.name = "Name must contain at least 3 characters";
+    isValid = false;
+  }
+
+  if (!formData.email.trim()) {
+    newErrors.email = "Email is required";
+    isValid = false;
+  } else if (
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+  ) {
+    newErrors.email = "Please enter a valid email";
+    isValid = false;
+  }
+
+  if (!formData.password.trim()) {
+    newErrors.password = "Password is required";
+    isValid = false;
+  } else if (formData.password.length < 8) {
+    newErrors.password =
+      "Password must be at least 8 characters";
+    isValid = false;
+  }
+
+  if (!formData.subject.trim()) {
+    newErrors.subject = "Subject is required";
+    isValid = false;
+  }
+
+  if (!formData.institution.trim()) {
+    newErrors.institution = "Institution is required";
+    isValid = false;
+  }
+
+  if (!formData.institutionLocation.city.trim()) {
+    newErrors.city = "City is required";
+    isValid = false;
+  }
+
+  if (!formData.institutionLocation.state.trim()) {
+    newErrors.state = "State is required";
+    isValid = false;
+  }
+
+  if (!formData.institutionLocation.country.trim()) {
+    newErrors.country = "Country is required";
+    isValid = false;
+  }
+
+  setErrors(newErrors);
+
+  return isValid;
+};
 
   const handleSubmit = async (
   e: React.FormEvent
 ) => {
-  setLoading(true);
 
   e.preventDefault();
 
+  if (!validate()) return;
+
+  setLoading(true);
+
   try {
 
-    const response =
-      await api.post(
-        "/auth/register",
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+    const response = await api.post(
+      "/auth/register",
+      {
+        ...formData,
+        email: formData.email.trim(),
+      },
+      {
+        withCredentials: true,
+      }
+    );
 
     if (response.data.success) {
 
-      // SAVE USER
-      login(
-        response.data.teacher
-      );
+      login(response.data.teacher);
 
-      alert(
-        "Registration Successful"
-      );
+      alert("Registration Successful");
 
       router.push("/");
 
@@ -111,9 +201,12 @@ const { login } =
       "Registration Failed"
     );
 
+  } finally {
+
+    setLoading(false);
+
   }
 
-  setLoading(false);
 };
 
   return (
@@ -169,6 +262,11 @@ const { login } =
 
           </div>
 
+          {errors.name && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.name}
+            </p>
+          )}
 
           {/* EMAIL */}
           <div>
@@ -196,7 +294,11 @@ const { login } =
             </div>
 
           </div>
-
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.email}
+            </p>
+          )}
 
           {/* PASSWORD */}
           <div>
@@ -224,6 +326,11 @@ const { login } =
             </div>
 
           </div>
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.password}
+            </p>
+          )}
 
 
           {/* SUBJECT */}
@@ -252,6 +359,11 @@ const { login } =
             </div>
 
           </div>
+          {errors.subject && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.subject}
+            </p>
+          )}
 
 
           {/* INSTITUTION */}
@@ -280,6 +392,11 @@ const { login } =
             </div>
 
           </div>
+          {errors.institution && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.institution}
+            </p>
+          )}
 
 
           {/* LOCATION */}
@@ -298,6 +415,11 @@ const { login } =
               }
               className="bg-[#f7f7f7] rounded-2xl px-4 py-4 border border-black/5 outline-none text-black placeholder:text-gray-500"
             />
+            {errors.city && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.city}
+              </p>
+            )}
 
             <input
               type="text"
@@ -312,7 +434,11 @@ const { login } =
               }
               className="bg-[#f7f7f7] rounded-2xl px-4 py-4 border border-black/5 outline-none text-black placeholder:text-gray-500"
             />
-
+            {errors.state && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.state}
+              </p>
+            )}
             <input
               type="text"
               name="country"
@@ -326,7 +452,11 @@ const { login } =
               }
               className="bg-[#f7f7f7] rounded-2xl px-4 py-4 border border-black/5 outline-none text-black placeholder:text-gray-500"
             />
-
+            {errors.country && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.country}
+              </p>
+            )}
           </div>
 
 

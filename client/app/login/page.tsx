@@ -13,6 +13,10 @@ import {
 export default function LoginPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({
+        email: "",
+        password: "",
+    });
 const { login } =
   useAuthStore();
   const [formData, setFormData] =
@@ -22,24 +26,31 @@ const { login } =
     });
 
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
 
-    setFormData({
-      ...formData,
-      [e.target.name]:
-        e.target.value,
-    });
+  const { name, value } = e.target;
 
-  };
+  setFormData({
+    ...formData,
+    [name]: value,
+  });
+
+  setErrors({
+    ...errors,
+    [name]: "",
+  });
+
+};
 
 
 const handleSubmit = async (
   e: React.FormEvent
 ) => {
-  setLoading(true);
   e.preventDefault();
+  if (!validate()) return;
+  setLoading(true);
 
   try {
 
@@ -78,7 +89,37 @@ const handleSubmit = async (
 
   setLoading(false);
 };
+const validate = () => {
+  const newErrors = {
+    email: "",
+    password: "",
+  };
 
+  let isValid = true;
+
+  if (!formData.email.trim()) {
+    newErrors.email = "Email is required";
+    isValid = false;
+  } else if (
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+  ) {
+    newErrors.email = "Please enter a valid email";
+    isValid = false;
+  }
+
+  if (!formData.password.trim()) {
+    newErrors.password = "Password is required";
+    isValid = false;
+  } else if (formData.password.length < 8) {
+    newErrors.password =
+      "Password must be at least 8 characters";
+    isValid = false;
+  }
+
+  setErrors(newErrors);
+
+  return isValid;
+};
 
   return (
 
@@ -132,6 +173,11 @@ const handleSubmit = async (
             </div>
 
           </div>
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.email}
+            </p>
+          )}
 
 
           {/* PASSWORD */}
@@ -158,9 +204,13 @@ const handleSubmit = async (
               />
 
             </div>
-
+            
           </div>
-
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.password}
+            </p>
+          )}
 
           {/* BUTTON */}
           <button disabled={loading} className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:scale-[1.02] transition-all duration-300 shadow-xl">

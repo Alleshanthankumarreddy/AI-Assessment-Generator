@@ -48,6 +48,14 @@ const GenerateAssignmentPage = () => {
   const [loading, setLoading] =
     useState(false);
 
+  const [errors, setErrors] = useState({
+    title: "",
+    subject: "",
+    dueDate: "",
+    file: "",
+    questionTypes: "",
+    instructions: "",
+  });
 
   // ================= QUESTION TYPES =================
 
@@ -177,12 +185,124 @@ const GenerateAssignmentPage = () => {
 
   };
 
+  const validate = () => {
+
+  const newErrors = {
+    title: "",
+    subject: "",
+    dueDate: "",
+    file: "",
+    questionTypes: "",
+    instructions: "",
+  };
+
+  let isValid = true;
+
+  // Assignment Title
+  if (!title.trim()) {
+    newErrors.title = "Assignment title is required";
+    isValid = false;
+  } else if (title.trim().length < 3) {
+    newErrors.title =
+      "Title should contain at least 3 characters";
+    isValid = false;
+  }
+
+  // Subject
+  if (!subject.trim()) {
+    newErrors.subject = "Subject is required";
+    isValid = false;
+  }
+
+  // Due Date
+  if (!dueDate) {
+    newErrors.dueDate = "Please select a due date";
+    isValid = false;
+  } else {
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    const selected = new Date(dueDate);
+
+    if (selected < today) {
+      newErrors.dueDate =
+        "Due date cannot be in the past";
+      isValid = false;
+    }
+
+  }
+
+  // File
+  if (!selectedFile) {
+    newErrors.file =
+      "Please upload a PDF or TXT file";
+    isValid = false;
+  } else {
+
+    const allowedTypes = [
+      "application/pdf",
+      "text/plain",
+    ];
+
+    if (
+      !allowedTypes.includes(selectedFile.type)
+    ) {
+
+      newErrors.file =
+        "Only PDF or TXT files are allowed";
+
+      isValid = false;
+    }
+
+    if (
+      selectedFile.size >
+      10 * 1024 * 1024
+    ) {
+
+      newErrors.file =
+        "Maximum file size is 10MB";
+
+      isValid = false;
+    }
+
+  }
+
+  // Question Types
+  if (questionTypes.length === 0) {
+
+    newErrors.questionTypes =
+      "Add at least one question type";
+
+    isValid = false;
+
+  }
+
+  // Instructions
+  if (
+    instructions.length > 1000
+  ) {
+
+    newErrors.instructions =
+      "Instructions cannot exceed 1000 characters";
+
+    isValid = false;
+
+  }
+
+  setErrors(newErrors);
+
+  return isValid;
+
+};
+
 // ================= HANDLE SUBMIT =================
 
 const handleSubmit = async () => {
 
-  try {
 
+  try {
+    if (!validate()) return;
     setLoading(true);
 
     const formData =
@@ -561,16 +681,26 @@ formData.append(
           <input
             type="text"
             value={title}
-            onChange={(e) =>
-              setTitle(
-                e.target.value
-              )
-            }
+            onChange={(e)=>{
+
+                setTitle(e.target.value);
+
+                setErrors(prev=>({
+                    ...prev,
+                    title:"",
+                }));
+
+            }}
             placeholder="Enter assignment title"
             className="w-full bg-[#f7f7f7] rounded-2xl px-5 py-4 outline-none border border-black/5 text-black placeholder:text-gray-500"
           />
 
         </div>
+        {errors.title && (
+            <p className="text-red-500 text-sm mt-2">
+                {errors.title}
+            </p>
+        )}
 
 
         {/* SUBJECT */}
@@ -586,15 +716,26 @@ formData.append(
             type="text"
             value={subject}
             onChange={(e) =>
+              {
               setSubject(
                 e.target.value
               )
+              setErrors(prev=>({
+                ...prev,
+                subject:"",
+              }));
+            }
             }
             placeholder="Enter subject"
             className="w-full bg-[#f7f7f7] rounded-2xl px-5 py-4 outline-none border border-black/5 text-black placeholder:text-gray-500"
           />
 
         </div>
+        {errors.subject && (
+            <p className="text-red-500 text-sm mt-2">
+                {errors.subject}
+            </p>
+        )}
 
 
         {/* FILE UPLOAD */}
@@ -624,17 +765,18 @@ formData.append(
               type="file"
               hidden
               accept=".pdf,.txt"
-              onChange={(e) => {
+              onChange={(e)=>{
 
-                if (
-                  e.target.files?.[0]
-                ) {
+                  if(e.target.files?.[0]){
 
-                  setSelectedFile(
-                    e.target.files[0]
-                  );
+                      setSelectedFile(e.target.files[0]);
 
-                }
+                      setErrors(prev=>({
+                          ...prev,
+                          file:"",
+                      }));
+
+                  }
 
               }}
             />
@@ -666,6 +808,11 @@ formData.append(
           </p>
 
         </div>
+        {errors.file && (
+            <p className="text-red-500 text-sm mt-4">
+                {errors.file}
+            </p>
+        )}
 
 
         {/* DUE DATE */}
@@ -683,9 +830,16 @@ formData.append(
               type="date"
               value={dueDate}
               onChange={(e) =>
+                {
                 setDueDate(
                   e.target.value
                 )
+                setErrors(prev=>({
+                    ...prev,
+                    dueDate:"",
+                }));
+
+              }
               }
               className="w-full bg-[#f7f7f7] rounded-2xl px-5 py-4 outline-none border border-black/5 text-black placeholder:text-gray-500"
             />
@@ -698,9 +852,13 @@ formData.append(
           </div>
 
         </div>
+        {errors.dueDate && (
+            <p className="text-red-500 text-sm mt-2">
+                {errors.dueDate}
+            </p>
+        )}
 
 
-        {/* QUESTION TYPES */}
         {/* QUESTION TYPES */}
 <div>
 
