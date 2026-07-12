@@ -159,7 +159,7 @@ const { login } =
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Enter full name"
-                className="bg-transparent outline-none ml-3 w-full"
+                className="bg-transparent outline-none ml-3 w-full text-black placeholder:text-gray-500"
               />
 
             </div>
