@@ -204,7 +204,7 @@ export default function AssignmentsPage() {
                 e.target.value
               )
             }
-            className="bg-transparent outline-none text-sm w-full"
+            className="bg-transparent outline-none ml-3 w-full text-black placeholder:text-gray-500"
           />
 
         </div>

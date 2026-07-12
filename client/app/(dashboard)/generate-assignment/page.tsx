@@ -567,7 +567,7 @@ formData.append(
               )
             }
             placeholder="Enter assignment title"
-            className="w-full bg-[#f7f7f7] rounded-2xl px-5 py-4 outline-none border border-black/5"
+            className="w-full bg-[#f7f7f7] rounded-2xl px-5 py-4 outline-none border border-black/5 text-black placeholder:text-gray-500"
           />
 
         </div>
@@ -591,7 +591,7 @@ formData.append(
               )
             }
             placeholder="Enter subject"
-            className="w-full bg-[#f7f7f7] rounded-2xl px-5 py-4 outline-none border border-black/5"
+            className="w-full bg-[#f7f7f7] rounded-2xl px-5 py-4 outline-none border border-black/5 text-black placeholder:text-gray-500"
           />
 
         </div>
@@ -639,7 +639,7 @@ formData.append(
               }}
             />
 
-            <div className="bg-gray-100 hover:bg-gray-200 transition px-6 py-3 rounded-xl text-sm font-medium cursor-pointer">
+            <div className="bg-gray-100 hover:bg-gray-200 transition px-6 py-3 rounded-xl text-sm font-medium cursor-pointer text-gray-700">
 
               Browse Files
 
@@ -687,7 +687,7 @@ formData.append(
                   e.target.value
                 )
               }
-              className="w-full bg-[#f7f7f7] rounded-2xl px-5 py-4 outline-none border border-black/5"
+              className="w-full bg-[#f7f7f7] rounded-2xl px-5 py-4 outline-none border border-black/5 text-black placeholder:text-gray-500"
             />
 
             <CalendarDays
