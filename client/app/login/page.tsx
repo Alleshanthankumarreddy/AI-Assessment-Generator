@@ -152,7 +152,7 @@ const handleSubmit = async (
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Enter password"
-                className="bg-transparent outline-none ml-3 w-full"
+                className="bg-transparent outline-none ml-3 w-full text-black placeholder:text-gray-500"
               />
 
             </div>
