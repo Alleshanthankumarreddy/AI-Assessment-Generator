@@ -4,6 +4,8 @@ import Image from "next/image";
 
 import Link from "next/link";
 
+import { usePathname } from "next/navigation";
+
 import {
   Home,
   FileText,
@@ -28,6 +30,13 @@ const Sidebar = ({
   setMobileOpen,
 }: Props) => {
 
+  const pathname = usePathname();
+
+  const activeClass =
+  "bg-black text-white shadow-md";
+
+const inactiveClass =
+  "text-gray-600 hover:bg-white hover:text-black";
   return (
 
     <>
@@ -78,9 +87,9 @@ const Sidebar = ({
         <div>
 
           {/* MOBILE CLOSE */}
-          <div className="flex items-center justify-between lg:hidden mb-6">
+          <div className="flex items-center text-black justify-between lg:hidden mb-6">
 
-            <h2 className="font-bold text-xl">
+            <h2 className="font-bold text-xl text-black">
               Menu
             </h2>
 
@@ -138,46 +147,43 @@ const Sidebar = ({
 
             <Link
               href="/"
-              onClick={() =>
-                setMobileOpen(false)
-              }
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-white transition"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${
+                pathname === "/"
+                  ? activeClass
+                  : inactiveClass
+              }`}
             >
-
               <Home size={18} />
-
               Home
-
             </Link>
 
 
             <Link
               href="/assignments"
-              onClick={() =>
-                setMobileOpen(false)
-              }
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-white transition"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${
+                pathname === "/assignments"
+                  ? activeClass
+                  : inactiveClass
+              }`}
             >
-
               <FileText size={18} />
-
               Assignments
-
             </Link>
 
 
             <Link
               href="/generate-assignment"
-              onClick={() =>
-                setMobileOpen(false)
-              }
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-white transition"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${
+                pathname === "/generate-assignment"
+                  ? activeClass
+                  : inactiveClass
+              }`}
             >
-
               <Sparkles size={18} />
-
               AI Generator
-
             </Link>
 
           </div>

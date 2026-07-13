@@ -118,7 +118,7 @@ const AssignmentMenu = ({
       {/* VIEW */}
       <button
         onClick={handleView}
-        className="w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition text-sm"
+        className="w-full px-4 text-black py-3 flex items-center gap-3 hover:bg-gray-50 transition text-sm"
       >
 
         <Eye size={16} />

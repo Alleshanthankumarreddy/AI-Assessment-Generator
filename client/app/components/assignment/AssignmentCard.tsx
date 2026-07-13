@@ -75,7 +75,7 @@ const AssignmentCard = ({
       )}
 
       {/* STATUS */}
-      <p className="text-sm mt-3">
+      <p className="text-sm mt-3 text-black">
 
         Status:
 

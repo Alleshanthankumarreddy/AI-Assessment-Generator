@@ -136,13 +136,8 @@ export default function AssignmentsPage() {
       {/* MOBILE HEADER */}
       <div className="flex items-center justify-between mb-6 lg:hidden">
 
-        <button className="w-11 h-11 rounded-full bg-white shadow-sm flex items-center justify-center">
 
-          <ArrowLeft size={20} />
-
-        </button>
-
-        <h1 className="font-bold text-lg">
+        <h1 className="font-bold text-lg text-black">
 
           Assignments
 
@@ -160,7 +155,7 @@ export default function AssignmentsPage() {
 
           <div className="w-3 h-3 rounded-full bg-green-500"></div>
 
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl text-black font-bold text-gray-900">
 
             Assignments
 
@@ -217,7 +212,7 @@ export default function AssignmentsPage() {
 
         {loading ? (
 
-          <div className="text-center py-20">
+          <div className="text-center py-20 text-black">
 
             Loading assignments...
 
