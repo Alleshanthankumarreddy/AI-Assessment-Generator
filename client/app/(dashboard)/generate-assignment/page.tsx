@@ -818,7 +818,7 @@ formData.append(
         {/* DUE DATE */}
         <div className="mb-8">
 
-          <label className="block mb-3 text-sm font-semibold text-gray-700">
+          <label className="block mb-3 text-sm font-semibold text-gray-700 text-black placeholder:text-gray-500">
 
             Due Date
 
@@ -1194,7 +1194,7 @@ formData.append(
                   setQuestionTypes(updated);
 
                 }}
-                className="w-full bg-white rounded-xl px-4 py-3 outline-none border border-black/5 text-sm"
+                className="w-full bg-white rounded-xl px-4 py-3 outline-none border border-black/5 text-sm text-black placeholder:text-gray-500"
               >
 
                 <option value="easy">
@@ -1219,7 +1219,7 @@ formData.append(
               {/* QUESTIONS */}
               <div>
 
-                <p className="text-xs font-semibold text-gray-500 mb-2">
+                <p className="text-xs font-semibold text-gray-500 mb-2 text-black placeholder:text-gray-500">
 
                   No. of Questions
 
@@ -1272,7 +1272,7 @@ formData.append(
               {/* MARKS */}
               <div>
 
-                <p className="text-xs font-semibold text-gray-500 mb-2">
+                <p className="text-xs font-semibold text-gray-500 mb-2 text-black placeholder:text-gray-500">
 
                   Marks
 
@@ -1400,7 +1400,7 @@ formData.append(
                 )
               }
               placeholder="Enter syllabus/content for AI generation..."
-              className="w-full bg-[#f7f7f7] rounded-3xl p-6 outline-none resize-none border border-black/5"
+              className="w-full bg-[#f7f7f7] rounded-3xl p-6 outline-none resize-none border border-black/5 text-black placeholder:text-gray-500"
             />
 
             <button className="absolute bottom-5 right-5 w-10 h-10 rounded-full bg-black text-white flex items-center justify-center">

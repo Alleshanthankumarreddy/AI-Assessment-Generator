@@ -117,21 +117,30 @@ export default function QuestionPaperPage() {
 
       <div
         ref={paperRef}
-        className="paper-container bg-white shadow-xl border border-gray-300 mx-auto"
-        style={{
-          width: "210mm",
-          minHeight: "297mm",
-          padding: "20mm",
-          boxSizing: "border-box",
-        }}
+        className="
+          paper-container
+          bg-white
+          shadow-xl
+          border
+          border-gray-300
+          mx-auto
+          w-full
+          lg:w-[210mm]
+          min-h-screen
+          lg:min-h-[297mm]
+          p-4
+          sm:p-6
+          lg:p-[20mm]
+          rounded-xl
+          lg:rounded-none
+        "
       >
 
         {/* HEADER */}
 
         <div className="text-center border-b-2 border-gray-400 pb-6">
 
-          <h1 className="text-4xl font-bold text-black">
-
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black text-center">
             {
               selectedAssignment?.institution ||
               "Assessment System"
@@ -139,13 +148,12 @@ export default function QuestionPaperPage() {
 
           </h1>
 
-          <p className="text-xl mt-3 font-medium">
-
+         <p className="text-lg sm:text-xl mt-2 font-medium text-black">
             Question Paper
 
           </p>
 
-          <p className="text-lg mt-2">
+          <p className="text-base sm:text-lg mt-2 text-black ">
 
             Subject:
             {" "}
@@ -157,8 +165,18 @@ export default function QuestionPaperPage() {
 
         {/* PAPER INFO */}
 
-        <div className="flex justify-between mt-8 text-black font-medium">
-
+        <div
+          className="
+            flex
+            flex-col
+            sm:flex-row
+            justify-between
+            gap-2
+            mt-6
+            text-black
+            font-medium
+          "
+        >
           <p>
 
             Due Date:
@@ -188,17 +206,13 @@ export default function QuestionPaperPage() {
 
         <div className="mt-8">
 
-          <h3 className="font-bold text-lg">
+          <h3 className="font-bold text-lg text-black">
 
             Instructions
 
           </h3>
 
-          <ul className="list-disc ml-6 mt-2">
-
-            <li>
-              All questions are compulsory.
-            </li>
+          <ul className="list-disc ml-6 mt-2 text-black">
 
             <li>
               Read all questions carefully.
@@ -214,8 +228,16 @@ export default function QuestionPaperPage() {
 
         {/* STUDENT DETAILS */}
 
-        <div className="grid grid-cols-2 gap-8 mt-10">
-
+        <div
+          className="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            gap-4
+            sm:gap-8
+            mt-8
+          "
+        >     
           <p>
             Name:
             _______________________
@@ -254,7 +276,7 @@ export default function QuestionPaperPage() {
 
                 <div className="text-center">
 
-                  <h2 className="text-2xl font-bold">
+                  <h2 className="text-lg sm:text-2xl font-bold text-black">
 
                     Section
                     {" "}
@@ -270,13 +292,13 @@ export default function QuestionPaperPage() {
 
                 <div className="mt-6">
 
-                  <h3 className="font-semibold text-xl">
+                  <h3 className="font-semibold text-lg sm:text-xl text-black">
 
                     {section.title}
 
                   </h3>
 
-                  <p className="italic mt-2">
+                  <p className="italic mt-2 text-black">
 
                     {section.instruction}
 
@@ -284,7 +306,7 @@ export default function QuestionPaperPage() {
 
                 </div>
 
-                <div className="mt-8 space-y-6">
+                <div className="mt-8 space-y-6 text-black">
 
                   {
                     section.questions.map(
@@ -312,16 +334,16 @@ export default function QuestionPaperPage() {
 
                           <div
                             key={questionIndex}
-                            className="question-block flex gap-4"
+                            className="question-block flex gap-3 items-start"
                           >
 
-                            <div>
+                            <div className="font-semibold text-base sm:text-lg">
                               {questionIndex + 1}.
                             </div>
 
                             <div className="flex-1">
 
-                              <p className="leading-8 whitespace-pre-line">
+                              <p className="leading-7 whitespace-pre-line text-black text-sm sm:text-base lg:text-lg">
 
                                 {questionText}
 
@@ -334,7 +356,7 @@ export default function QuestionPaperPage() {
 
                               {options.length > 0 && (
 
-                                <div className="ml-6 mt-3 space-y-2">
+                                <div className="ml-4 sm:ml-6 mt-3 space-y-2 text-sm sm:text-base lg:text-lg text-black">
 
                                   {options.map(
                                     (
@@ -374,7 +396,7 @@ export default function QuestionPaperPage() {
 
         <div className="mt-16 border-t pt-6 text-center">
 
-          <p className="font-semibold">
+          <p className="font-semibold text-black">
 
             ***** End of Question Paper *****
 
