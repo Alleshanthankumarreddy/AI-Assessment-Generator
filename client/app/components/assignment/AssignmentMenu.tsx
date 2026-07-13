@@ -102,11 +102,13 @@ const AssignmentMenu = ({
 
         }
 
-      } catch (error) {
+      } catch (error: any) {
+    alert(
+      error?.response?.data?.message ||
+      "Failed to delete assignment."
+    );
+  }
 
-        console.log(error);
-
-      }
 
     };
 
