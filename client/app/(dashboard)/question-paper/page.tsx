@@ -236,6 +236,7 @@ export default function QuestionPaperPage() {
             gap-4
             sm:gap-8
             mt-8
+            text-black
           "
         >     
           <p>

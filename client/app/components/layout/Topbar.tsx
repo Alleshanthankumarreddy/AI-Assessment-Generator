@@ -131,7 +131,7 @@ const Topbar = ({
         {
           teacher && (
 
-            <button className="relative">
+            <button className="relative text-black hover:text-gray-600 transition">
 
               <Bell size={22} />
 
@@ -221,7 +221,7 @@ const Topbar = ({
           onClick={() =>
             setMobileOpen(true)
           }
-          className="lg:hidden"
+          className="lg:hidden text-black hover:text-gray-600 transition"
         >
 
           <Menu size={26} />

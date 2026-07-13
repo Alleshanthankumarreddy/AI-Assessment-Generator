@@ -1134,7 +1134,7 @@ formData.append(
                   setQuestionTypes(updated);
 
                 }}
-                className="flex-1 bg-white rounded-xl px-4 py-3 outline-none border border-black/5 text-sm font-medium"
+                className="flex-1 bg-white rounded-xl px-4 py-3 outline-none border border-black/5 text-sm font-medium text-black"
               >
 
                 {
@@ -1225,7 +1225,7 @@ formData.append(
 
                 </p>
 
-                <div className="bg-white rounded-xl px-3 py-3 flex items-center justify-between border border-black/5">
+                <div className="bg-white text-black rounded-xl px-3 py-3 flex items-center justify-between border border-black/5">
 
                   <button
                     onClick={() =>
@@ -1243,7 +1243,7 @@ formData.append(
 
                   </button>
 
-                  <span className="font-semibold text-sm">
+                  <span className="font-semibold text-black text-sm">
 
                     {item.questions}
 
