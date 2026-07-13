@@ -34,9 +34,10 @@
 // export default redisConnection;
 
 import Redis from "ioredis";
-
+import dotenv from "dotenv";
+dotenv.config();
 const redisConnection = new Redis(
-  process.env.REDIS_URL,
+   process.env.REDIS_URL,
   {
     maxRetriesPerRequest: null,
   }
@@ -45,6 +46,12 @@ const redisConnection = new Redis(
 redisConnection.on("connect", () => {
   console.log("Redis Connected");
 });
+redisConnection.on("reconnecting", () => {
+  console.log("Redis Reconnecting...");
+})
+redisConnection.on("close", () => {
+  console.log("Redis Closed");
+})
 
 redisConnection.on("error", (err) => {
   console.log("Redis Error:", err);

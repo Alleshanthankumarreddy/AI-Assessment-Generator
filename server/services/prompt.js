@@ -73,11 +73,10 @@ QUESTION GENERATION RULES
 
 10. Ensure the total marks and number of questions exactly match the configuration.
 `;
+assignment.questionConfigurations.forEach(
+  (config, index) => {
 
-  assignment.questionConfigurations.forEach(
-    (config, index) => {
-
-      prompt += `
+    prompt += `
 =====================
 SECTION ${index + 1}
 =====================
@@ -93,8 +92,54 @@ Additional Section Rules:
 - Do not mix question types or difficulty levels within this section.
 - Ensure logical progression and variety among questions in this section.
 `;
+
+    // MCQ Rules
+    if (config.type.toLowerCase() === "mcq") {
+
+      prompt += `
+
+MCQ SPECIFIC RULES
+
+1. Every MCQ must have exactly FOUR options.
+
+2. Store BOTH the question and the options inside the "questionText" field.
+
+3. Separate the question and options using the delimiter:
+
+<<<OPTIONS>>>
+
+4. The format MUST be exactly:
+
+Which language is object oriented?
+
+<<<OPTIONS>>>
+
+A. Java
+
+B. HTML
+
+C. CSS
+
+D. XML
+
+5. Do NOT create a separate "options" field.
+
+6. Do NOT omit the delimiter.
+
+7. Always provide four options labelled A, B, C and D.
+
+8. Only one option should be correct.
+
+9. Wrong options should be realistic and meaningful.
+
+10. Never mention the correct answer in the output.
+
+`;
+
     }
-  );
+
+  }
+);
 
   prompt += `
 =====================
@@ -108,7 +153,27 @@ IMPORTANT OUTPUT RULES
 5. Do NOT include any text before or after the JSON object.
 6. Ensure the JSON is syntactically correct and parseable.
 7. Match the exact structure and field names in the required JSON format below.
+8. If the question type is MCQ, the "questionText" field must contain BOTH the question and its four options.
 
+9. Separate the question and options using the delimiter:
+
+<<<OPTIONS>>>
+
+10. Example:
+
+"What is the capital of India?
+
+<<<OPTIONS>>>
+
+A. Hyderabad
+
+B. Delhi
+
+C. Mumbai
+
+D. Chennai"
+
+11. Do NOT create an "options" field.
 =====================
 REQUIRED JSON FORMAT
 =====================

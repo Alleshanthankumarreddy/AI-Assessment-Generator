@@ -291,49 +291,75 @@ export default function QuestionPaperPage() {
                       (
                         question,
                         questionIndex
-                      ) => (
+                      ) => {
 
-                        <div
-                          key={questionIndex}
-                          className="question-block flex gap-4"
-                        >
+                        const parts =
+                          question.questionText.split(
+                            "<<<OPTIONS>>>"
+                          );
 
-                          <div>
+                        const questionText =
+                          parts[0].trim();
 
-                            {
-                              questionIndex + 1
-                            }.
+                        const options =
+                          parts.length > 1
+                            ? parts[1]
+                                .match(/[A-D]\.\s.*(?:\n|$)/g)
+                                ?.map(option => option.trim()) || []
+                            : [];
+
+                        return (
+
+                          <div
+                            key={questionIndex}
+                            className="question-block flex gap-4"
+                          >
+
+                            <div>
+                              {questionIndex + 1}.
+                            </div>
+
+                            <div className="flex-1">
+
+                              <p className="leading-8 whitespace-pre-line">
+
+                                {questionText}
+
+                                <span className="font-semibold">
+                                  {" "}
+                                  [{question.marks} Marks]
+                                </span>
+
+                              </p>
+
+                              {options.length > 0 && (
+
+                                <div className="ml-6 mt-3 space-y-2">
+
+                                  {options.map(
+                                    (
+                                      option,
+                                      index
+                                    ) => (
+
+                                      <div key={index}>
+                                        {option}
+                                      </div>
+
+                                    )
+                                  )}
+
+                                </div>
+
+                              )}
+
+                            </div>
 
                           </div>
 
-                          <div className="flex-1">
+                        );
 
-                            <p className="leading-8 whitespace-pre-line">
-
-                              {
-                                question.questionText
-                              }
-
-                              <span className="font-semibold">
-
-                                {" "}
-                                [
-                                {
-                                  question.marks
-                                }
-                                {" "}
-                                Marks]
-
-                              </span>
-
-                            </p>
-
-                          </div>
-
-                        </div>
-
-                      )
-                    )
+                    })
                   }
 
                 </div>
